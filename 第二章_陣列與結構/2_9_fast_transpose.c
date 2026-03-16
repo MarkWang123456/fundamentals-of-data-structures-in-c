@@ -18,14 +18,14 @@ term a[MAX_TERMS] = {
 
 term b[MAX_TERMS];
 
-void fastTranspose(term a[], term b[]) {
+void fast_transpose(term x[], term y[]) {
     int row_terms[MAX_COL], //統計原矩陣中，每一Col有多少個非零資料
     starting_pos[MAX_COL];//starting_pos是每一col的資料在轉置後的陣列中，應該從哪一格開始放
-    int i, j, num_cols = a[0].col, num_terms = a[0].value;
+    int i, j, num_cols = x[0].col, num_terms = x[0].value;
 
-    b[0].row = num_cols;
-    b[0].col = a[0].row;
-    b[0].value = num_terms;
+    y[0].row = num_cols;
+    y[0].col = x[0].row;
+    y[0].value = num_terms;
 
     if (num_terms > 0) {
         for (i = 0; i < num_cols; i++) {// 初始化 row_terms
@@ -33,7 +33,7 @@ void fastTranspose(term a[], term b[]) {
         }
 
         for (i = 1; i <= num_terms; i++) {// 統計原矩陣每一行 (col) 出現的次數
-            row_terms[a[i].col]++; //每出現一次行號就+1  如果 a[i].col 是 3，那這行程式碼就相當於 row_terms[3]++，也就是把第 3 行的計數器加 1。
+            row_terms[x[i].col]++; //每出現一次行號就+1  如果 a[i].col 是 3，那這行程式碼就相當於 row_terms[3]++，也就是把第 3 行的計數器加 1。
         }
             
         starting_pos[0] = 1; // 資料從 Index 1 開始
@@ -42,10 +42,10 @@ void fastTranspose(term a[], term b[]) {
         }
 
         for (i = 1; i <= num_terms; i++) {  // 重頭掃描 a 陣列，直接投遞到 b 的正確位置
-            j = starting_pos[a[i].col]++; // 取得位置後，該指標往後移一位
-            b[j].row = a[i].col;
-            b[j].col = a[i].row;
-            b[j].value = a[i].value;
+            j = starting_pos[x[i].col]++; // 取得位置後，該指標往後移一位
+            y[j].row = x[i].col;
+            y[j].col = x[i].row;
+            y[j].value = x[i].value;
         }
     }
 }
@@ -73,7 +73,7 @@ void print1(term x[]){
 int main(){
     printf("Sparse Matrix a\n");
     print1(a);
-    fastTranspose(a,b);
+    fast_transpose(a,b);
     printf("Sparse Matrix b\n");
     print1(b);
     return 0;
